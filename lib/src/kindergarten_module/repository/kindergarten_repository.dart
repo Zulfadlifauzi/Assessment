@@ -9,12 +9,10 @@ class KindergartenRepository extends DioServices {
     int? page,
   }) async {
     try {
-      print('from repo $page');
       final Response response = await dio.get(
         baseUrl,
         queryParameters: {
           '_page': page,
-          '_per_page': 10,
         },
       );
       if (response.statusCode == 200) {
