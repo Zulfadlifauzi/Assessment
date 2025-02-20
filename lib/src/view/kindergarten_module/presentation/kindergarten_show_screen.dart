@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:kiddocareassessment/src/kindergarten_module/model/kindergarten_model.dart';
+import 'package:kiddocareassessment/src/view/kindergarten_module/model/kindergarten_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/image_constants.dart';
+import '../../../../constants/image_constants.dart';
 import '../../../widget/container_widget.dart';
 import '../provider/kindergarten_provider.dart';
 

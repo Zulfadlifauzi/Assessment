@@ -12,16 +12,8 @@ class BaseProvider extends ChangeNotifier {
   bool setIsLoading = false;
   bool get getIsLoading => setIsLoading;
 
-  bool setIsSearching = false;
-  bool get getIsSearching => setIsSearching;
-
   void setLoadingValue(bool value) {
     setIsLoading = value;
-    notifyListeners();
-  }
-
-  void setIsSearchingValue(bool value) {
-    setIsSearching = value;
     notifyListeners();
   }
 }

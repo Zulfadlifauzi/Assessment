@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'src/kindergarten_module/presentation/kindergarten_index_screen.dart';
+import 'src/view/kindergarten_module/presentation/kindergarten_index_screen.dart';
 
 void main() {
   runApp(const MyApp());
