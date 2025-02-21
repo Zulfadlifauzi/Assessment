@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          colorScheme: const ColorScheme.light(primary: Colors.white),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
           useMaterial3: true,
           cardTheme: const CardTheme(color: Colors.white)),
       home: const KindergartenIndexScreen(),

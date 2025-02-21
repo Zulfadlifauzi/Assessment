@@ -7,8 +7,6 @@ class KindergartenProvider extends KindergartenRepository {
     fetchIndexKindergartenProvider();
     getScrollControllerListener();
   }
-  // List<KindergartenDataModel> setIndexKindergarten = [];
-  // List<KindergartenDataModel> get getIndexKindergarten => setIndexKindergarten;
 
   List<KindergartenDataModel> setFilteredKindergarten = [];
   List<KindergartenDataModel> get getFilteredKindergarten =>
@@ -20,14 +18,14 @@ class KindergartenProvider extends KindergartenRepository {
   int setCurrentPage = 1;
   int get getCurrentPage => setCurrentPage;
 
-  bool setIsSearching = false;
-  bool get getIsSearching => setIsSearching;
-
   String setCurrentSearchQuery = "";
   String get getCurrentSearchQuery => setCurrentSearchQuery;
 
-  int setPerPage = 20;
+  int setPerPage = 10;
   int get getPerPage => setPerPage;
+
+  TextEditingController setSearchcontroller = TextEditingController();
+  TextEditingController get getSearchController => setSearchcontroller;
 
   Future<void> fetchIndexKindergartenProvider() async {
     if (setIsLoading || !setHasMore) return;
@@ -45,9 +43,6 @@ class KindergartenProvider extends KindergartenRepository {
         setHasMore = false;
       }
       setFilteredKindergarten.addAll(fetchedKindergartens.data ?? []);
-      // if (!setIsSearching) {
-      //   setFilteredKindergarten = List.from(setIndexKindergarten);
-      // }
     } catch (error) {
       print('Error: Failed to load kindergarten: $error');
     } finally {
@@ -62,8 +57,11 @@ class KindergartenProvider extends KindergartenRepository {
     try {
       KindergartenModel fetchedKindergartens =
           await fetchIndexKindergartenRepository(page: setCurrentPage);
-      setCurrentPage++;
+
       List<KindergartenDataModel> newData = fetchedKindergartens.data ?? [];
+
+      setCurrentPage++;
+
       newData = newData
           .where((item) =>
               (item.name
@@ -75,9 +73,9 @@ class KindergartenProvider extends KindergartenRepository {
                       .contains(setCurrentSearchQuery.toLowerCase()) ??
                   false))
           .toList();
-      setFilteredKindergarten.addAll(newData); // Add to filtered list
+      setFilteredKindergarten.addAll(newData);
+
       if ((setCurrentPage - 1) == fetchedKindergartens.last) {
-        // Stop fetching more data if no results found or reached last page
         setHasMore = false;
       } else {
         await fetchSearchKindergartens();
@@ -86,25 +84,26 @@ class KindergartenProvider extends KindergartenRepository {
       print('Error fetching search results: $error');
     } finally {
       setLoadingValue(false);
-      notifyListeners(); // Ensure that listeners are notified after updates
+      notifyListeners();
     }
   }
 
   Future<void> searchKindergarten(String query) async {
     setCurrentSearchQuery = query;
-    setCurrentPage = 1; // Reset search pagination
-    setHasMore = true; // Reset search hasMore
-    setFilteredKindergarten = []; // Clear the filtered list
+    setCurrentPage = 1;
+    setHasMore = true;
+    setFilteredKindergarten = [];
     if (query.isEmpty) {
-      setFilteredKindergarten = [];
-      setIsSearching = false;
+      await fetchIndexKindergartenProvider();
       notifyListeners();
-      return; // Exit early if the query is empty
+      return;
     }
     await fetchSearchKindergartens();
   }
 
   Future<void> refreshKindergarten() async {
+    setCurrentSearchQuery = "";
+    setSearchcontroller.clear();
     setCurrentPage = 1;
     setHasMore = true;
     setFilteredKindergarten = [];
@@ -115,7 +114,6 @@ class KindergartenProvider extends KindergartenRepository {
   void clearSearchController() {
     setSearchcontroller.clear();
     setFilteredKindergarten = [];
-    setIsSearching = false;
     setCurrentPage = 1;
     setHasMore = true;
     fetchIndexKindergartenProvider();

@@ -6,8 +6,6 @@ class BaseProvider extends ChangeNotifier {
 
   ScrollController setScrollController = ScrollController();
   ScrollController get getScrollController => setScrollController;
-  TextEditingController setSearchcontroller = TextEditingController();
-  TextEditingController get getSearchController => setSearchcontroller;
 
   bool setIsLoading = false;
   bool get getIsLoading => setIsLoading;
