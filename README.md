@@ -17,3 +17,4 @@ a. Fetch data from API endpoint:
 https://flutter-test.kiddocare.my/kindergartens/{kindergarten_id}
 b. Display detailed information (e.g., image, name, location, contact details,
 description).
+ 
