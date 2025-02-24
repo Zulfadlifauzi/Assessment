@@ -2,16 +2,18 @@
 
 A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# kiddoCareAssessment
+1. Listing screen
+a. Fetch data from the API endpoint:
+https://flutter-test.kiddocare.my/kindergartens
+b. Display a list of kindergartens (e.g: name, location, image)
+c. Implement a loading state (e.g: progress indicator)
+d. Implement a basic search or filter functionality (e.g: filter by name, location)
+e. Implement pagination. You may add following parameters for pagination:
+i. _page: Page number (e.g: _page=5 for page 5)
+ii. _per_page: Number of data per page. (e.g.: _per_page=100 for 100 data
+per page)
+2. Detail screen
+a. Fetch data from API endpoint:
+https://flutter-test.kiddocare.my/kindergartens/{kindergarten_id}
+b. Display detailed information (e.g., image, name, location, contact details,
+description).
