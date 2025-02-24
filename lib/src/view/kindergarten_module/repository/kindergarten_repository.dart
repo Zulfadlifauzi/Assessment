@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:dio/dio.dart';
 import 'package:kiddocareassessment/services/dio_services.dart';
 import 'package:kiddocareassessment/src/view/kindergarten_module/model/kindergarten_model.dart';
@@ -16,9 +18,9 @@ class KindergartenRepository extends DioServices {
         },
       );
       if (response.statusCode == 200) {
-        return KindergartenModel.fromJson(
-          response.data,
-        );
+        return await Isolate.run(() => KindergartenModel.fromJson(
+              response.data,
+            ));
       } else {
         throw Exception('Failed to load kindergarten');
       }
@@ -31,7 +33,9 @@ class KindergartenRepository extends DioServices {
     try {
       final response = await dio.get('$baseUrl$id');
       if (response.statusCode == 200) {
-        return KindergartenDataModel.fromJson(response.data);
+        return KindergartenDataModel.fromJson(
+          response.data,
+        );
       } else {
         throw Exception('Failed to load kindergarten');
       }

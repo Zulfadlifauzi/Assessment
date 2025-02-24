@@ -26,9 +26,6 @@ class KindergartenProvider extends KindergartenRepository {
   bool setIsFabVisible = false;
   bool get getIsFabVisible => setIsFabVisible;
 
-  String _setErrorMessage = '';
-  String get getErrorMessage => _setErrorMessage;
-
   List<KindergartenDataModel> setFilteredStates = [
     KindergartenDataModel(
       state: 'Selangor',
@@ -275,10 +272,5 @@ class KindergartenProvider extends KindergartenRepository {
       setLoadingValue(false);
     }
     return setShowKindergarten;
-  }
-
-  void setErrorMessage(String message) {
-    _setErrorMessage = message;
-    notifyListeners();
   }
 }

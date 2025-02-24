@@ -17,4 +17,12 @@ class BaseProvider extends ChangeNotifier {
     setIsLoading = value;
     notifyListeners();
   }
+
+  String _setErrorMessage = '';
+  String get getErrorMessage => _setErrorMessage;
+
+  void setErrorMessage(String message) {
+    _setErrorMessage = message;
+    notifyListeners();
+  }
 }
