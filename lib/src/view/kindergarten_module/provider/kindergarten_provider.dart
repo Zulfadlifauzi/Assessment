@@ -15,6 +15,7 @@ class KindergartenProvider extends KindergartenRepository {
   int setCurrentPage = 1;
   int setPerPage = 10;
   KindergartenDataModel setSelectedState = KindergartenDataModel();
+
   List<KindergartenDataModel> setFilteredKindergartenList = [];
   List<KindergartenDataModel> get getFilteredKindergartenList =>
       setFilteredKindergartenList;
@@ -151,7 +152,7 @@ class KindergartenProvider extends KindergartenRepository {
       }
       setFilteredKindergartenList.addAll(newData);
 
-      if ((setCurrentPage - 1) == fetchedKindergartens.last) {
+      if (fetchedKindergartens.next == null) {
         setHasMore = false;
       } else {
         await fetchIndexsearchKindergartenProvider();
@@ -164,7 +165,7 @@ class KindergartenProvider extends KindergartenRepository {
     }
   }
 
-  Future<void> searchKindergartenprovider(String query) async {
+  Future<void> searchKindergartenProvider(String query) async {
     setSearchController.text = query;
     cleanUpListProvider();
     await fetchIndexsearchKindergartenProvider();
@@ -253,11 +254,6 @@ class KindergartenProvider extends KindergartenRepository {
     notifyListeners();
   }
 
-  void setErrorMessage(String message) {
-    _setErrorMessage = message;
-    notifyListeners();
-  }
-
   @override
   void dispose() {
     setScrollController.removeListener(listenScrollControllerProvider);
@@ -274,9 +270,15 @@ class KindergartenProvider extends KindergartenRepository {
     try {
       setShowKindergarten = await fetchShowKindergartenRepository(id);
     } catch (error) {
-      Exception('Failed to load kindergarten');
+      setErrorMessage(error.toString());
+    } finally {
+      setLoadingValue(false);
     }
-    setLoadingValue(false);
     return setShowKindergarten;
+  }
+
+  void setErrorMessage(String message) {
+    _setErrorMessage = message;
+    notifyListeners();
   }
 }

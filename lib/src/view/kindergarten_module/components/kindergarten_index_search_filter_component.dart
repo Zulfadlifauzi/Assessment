@@ -12,11 +12,11 @@ class KindergartenIndexSearchFilterComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: TextField(
+      child: TextFormField(
         controller: kindergartenProvider.getSearchController,
         onChanged: (String values) {
           DebounceUtils.startDebounceTimer(() async {
-            await kindergartenProvider.searchKindergartenprovider(values);
+            await kindergartenProvider.searchKindergartenProvider(values);
           });
         },
         decoration: InputDecoration(
