@@ -39,7 +39,7 @@ class KindergartenIndexListDataComponent extends StatelessWidget {
                       imageUrl: kindergartenProvider
                           .getFilteredKindergartenList[index].imageUrl
                           .toString(),
-                      width: 100,
+                      width: 80,
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
                           Image.asset(placeholderImage),
