@@ -24,3 +24,11 @@ https://flutter-test.kiddocare.my/kindergartens/{kindergarten_id}
 
 b. Display detailed information (e.g., image, name, location, contact details,
 description).
+
+
+# App example showcase
+
+https://github.com/user-attachments/assets/bf8c92b1-eb72-4a63-9ab6-5890dc9ab317
+
+
+
