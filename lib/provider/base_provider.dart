@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 class BaseProvider extends ChangeNotifier {
   final Dio dio = Dio();
 
-  ScrollController setScrollController = ScrollController();
+  late ScrollController setScrollController = ScrollController();
   ScrollController get getScrollController => setScrollController;
+
+  TextEditingController setSearchController = TextEditingController();
+  TextEditingController get getSearchController => setSearchController;
 
   bool setIsLoading = false;
   bool get getIsLoading => setIsLoading;

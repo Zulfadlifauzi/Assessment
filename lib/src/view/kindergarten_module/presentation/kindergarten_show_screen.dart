@@ -14,6 +14,7 @@ class KindergartenShowScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Detail Kindergarten'),
       ),
@@ -34,33 +35,23 @@ class KindergartenShowScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: kindergartenShowData.imageUrl.toString(),
-                    width: MediaQuery.sizeOf(context).width,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        Image.asset(placeholderImage),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                  Hero(
+                    tag: kindergartenShowData.id.toString(),
+                    child: CachedNetworkImage(
+                      imageUrl: kindergartenShowData.imageUrl.toString(),
+                      width: MediaQuery.sizeOf(context).width,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          Image.asset(placeholderImage),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            ContainerWidget(
-                              customText: kindergartenShowData.state.toString(),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            ContainerWidget(
-                              customText: kindergartenShowData.city.toString(),
-                            ),
-                          ],
-                        ),
                         const SizedBox(
                           height: 15,
                         ),
@@ -78,6 +69,68 @@ class KindergartenShowScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Location',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Wrap(
+                          spacing: 10,
+                          children: [
+                            ContainerWidget(
+                              customText: kindergartenShowData.state.toString(),
+                            ),
+                            ContainerWidget(
+                              customText: kindergartenShowData.city.toString(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Contact',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Wrap(
+                          spacing: 10,
+                          children: [
+                            ContainerWidget(
+                              customText:
+                                  kindergartenShowData.contactPerson.toString(),
+                            ),
+                            ContainerWidget(
+                              customText:
+                                  kindergartenShowData.contactNo.toString(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               );
             }

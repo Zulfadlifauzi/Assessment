@@ -5,53 +5,124 @@ import 'package:kiddocareassessment/src/view/kindergarten_module/repository/kind
 class KindergartenProvider extends KindergartenRepository {
   KindergartenProvider() {
     fetchIndexKindergartenProvider();
-    getScrollControllerListener();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setScrollController.addListener(() {
+        listenScrollControllerProvider();
+      });
+    });
   }
 
-  List<KindergartenDataModel> setFilteredKindergarten = [];
-  List<KindergartenDataModel> get getFilteredKindergarten =>
-      setFilteredKindergarten;
+  int setCurrentPage = 1;
+  int setPerPage = 10;
+  KindergartenDataModel setSelectedState = KindergartenDataModel();
+  List<KindergartenDataModel> setFilteredKindergartenList = [];
+  List<KindergartenDataModel> get getFilteredKindergartenList =>
+      setFilteredKindergartenList;
 
   bool setHasMore = true;
   bool get getHasMore => setHasMore;
 
-  int setCurrentPage = 1;
-  int get getCurrentPage => setCurrentPage;
+  bool setIsFabVisible = false;
+  bool get getIsFabVisible => setIsFabVisible;
 
-  String setCurrentSearchQuery = "";
-  String get getCurrentSearchQuery => setCurrentSearchQuery;
+  String _setErrorMessage = '';
+  String get getErrorMessage => _setErrorMessage;
 
-  int setPerPage = 10;
-  int get getPerPage => setPerPage;
-
-  TextEditingController setSearchcontroller = TextEditingController();
-  TextEditingController get getSearchController => setSearchcontroller;
+  List<KindergartenDataModel> setFilteredStates = [
+    KindergartenDataModel(
+      state: 'Selangor',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Johor',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Perlis',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Kedah',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Perak',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Sabah',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Sarawak',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Pahang',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Negeri Sembilan',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Kelantan',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Terengganu',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Melaka',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Pulau Pinang',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Federal Territory of Putrajaya',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Federal Territory of Kuala Lumpur',
+      value: false,
+    ),
+    KindergartenDataModel(
+      state: 'Federal Territory of Labuan',
+      value: false,
+    ),
+  ];
+  List<KindergartenDataModel> get getFilteredStates => setFilteredStates;
 
   Future<void> fetchIndexKindergartenProvider() async {
-    if (setIsLoading || !setHasMore) return;
+    if (setIsLoading) return;
     setLoadingValue(true);
     try {
       KindergartenModel fetchedKindergartens =
           await fetchIndexKindergartenRepository(
               page: setCurrentPage, perPage: setPerPage);
 
-      final bool isLastPage =
-          (fetchedKindergartens.data?.length ?? 0) <= setCurrentPage;
+      List<KindergartenDataModel> newKindergartenData =
+          fetchedKindergartens.data ?? [];
 
       setCurrentPage++;
-      if (isLastPage) {
+
+      int nextPage = fetchedKindergartens.next ?? 0;
+      if (nextPage == 0) {
         setHasMore = false;
       }
-      setFilteredKindergarten.addAll(fetchedKindergartens.data ?? []);
+      setFilteredKindergartenList.addAll(newKindergartenData);
     } catch (error) {
-      print('Error: Failed to load kindergarten: $error');
+      setErrorMessage(error.toString());
     } finally {
       setLoadingValue(false);
       notifyListeners();
     }
   }
 
-  Future<void> fetchSearchKindergartens() async {
+  Future<void> fetchIndexsearchKindergartenProvider() async {
     if (setIsLoading || !setHasMore) return;
     setLoadingValue(true);
     try {
@@ -62,89 +133,136 @@ class KindergartenProvider extends KindergartenRepository {
 
       setCurrentPage++;
 
-      newData = newData
-          .where((item) =>
-              (item.name
-                      ?.toLowerCase()
-                      .contains(setCurrentSearchQuery.toLowerCase()) ??
-                  false) ||
-              (item.state
-                      ?.toLowerCase()
-                      .contains(setCurrentSearchQuery.toLowerCase()) ??
-                  false))
-          .toList();
-      setFilteredKindergarten.addAll(newData);
+      final String searchQuery = setSearchController.text.toLowerCase();
+
+      if (setSelectedState.state != null) {
+        newData = newData
+            .where((item) =>
+                item.state.toString().toLowerCase().contains(
+                    setSelectedState.state.toString().toLowerCase()) &&
+                item.name.toString().toLowerCase().contains(searchQuery))
+            .toList();
+      } else {
+        newData = newData
+            .where((item) =>
+                item.state.toString().toLowerCase().contains(searchQuery) ||
+                item.name.toString().toLowerCase().contains(searchQuery))
+            .toList();
+      }
+      setFilteredKindergartenList.addAll(newData);
 
       if ((setCurrentPage - 1) == fetchedKindergartens.last) {
         setHasMore = false;
       } else {
-        await fetchSearchKindergartens();
+        await fetchIndexsearchKindergartenProvider();
       }
     } catch (error) {
-      print('Error fetching search results: $error');
+      setErrorMessage(error.toString());
     } finally {
       setLoadingValue(false);
       notifyListeners();
     }
   }
 
-  Future<void> searchKindergarten(String query) async {
-    setCurrentSearchQuery = query;
-    setCurrentPage = 1;
-    setHasMore = true;
-    setFilteredKindergarten = [];
-    if (query.isEmpty) {
+  Future<void> searchKindergartenprovider(String query) async {
+    setSearchController.text = query;
+    cleanUpListProvider();
+    await fetchIndexsearchKindergartenProvider();
+    notifyListeners();
+  }
+
+  Future<void> refreshKindergartenListProvider() async {
+    cleanUpListProvider();
+    if (setSelectedState.state != '' && setSelectedState.state != null) {
+      await fetchIndexsearchKindergartenProvider();
+    } else {
       await fetchIndexKindergartenProvider();
-      notifyListeners();
-      return;
     }
-    await fetchSearchKindergartens();
-  }
-
-  Future<void> refreshKindergarten() async {
-    setCurrentSearchQuery = "";
-    setSearchcontroller.clear();
-    setCurrentPage = 1;
-    setHasMore = true;
-    setFilteredKindergarten = [];
-    await fetchIndexKindergartenProvider();
     notifyListeners();
   }
 
-  void clearSearchController() {
-    setSearchcontroller.clear();
-    setFilteredKindergarten = [];
-    setCurrentPage = 1;
-    setHasMore = true;
-    fetchIndexKindergartenProvider();
+  Future<void> clearSearchControllerProvider() async {
+    setSearchController.clear();
+    cleanUpListProvider();
+    if (setSelectedState.state != '' && setSelectedState.state != null) {
+      await fetchIndexsearchKindergartenProvider();
+    } else {
+      await fetchIndexKindergartenProvider();
+    }
     notifyListeners();
   }
 
-  void getScrollControllerListener() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setScrollController.addListener(() {
-        listenScrollController();
-      });
-    });
+  Future<void> setFilteredByStateProvider({String? selectedStateByUser}) async {
+    if (selectedStateByUser.toString().isNotEmpty) {
+      for (var element in setFilteredStates) {
+        element.value = element.state == selectedStateByUser;
+      }
+      cleanUpListProvider();
+      await fetchIndexsearchKindergartenProvider();
+    } else {
+      for (var element in setFilteredStates) {
+        element.value = false;
+      }
+      setSelectedState.state = '';
+    }
+    notifyListeners();
   }
 
-  void listenScrollController() {
+  void toggleStateSelectionsProvider(int index) async {
+    bool isSelected = setFilteredStates[index].value ?? false;
+    setFilteredStates[index].value = !isSelected;
+    notifyListeners();
+
+    setSearchController.clear();
+    cleanUpListProvider();
+
+    if (isSelected) {
+      await fetchIndexKindergartenProvider();
+      await setFilteredByStateProvider(selectedStateByUser: '');
+    } else {
+      setSelectedState.state = setFilteredStates[index].state;
+      await setFilteredByStateProvider(
+          selectedStateByUser: setFilteredStates[index].state.toString());
+    }
+  }
+
+  void listenScrollControllerProvider() {
+    if (setScrollController.position.pixels > 0) {
+      if (!setIsFabVisible) {
+        setIsFabVisible = true;
+        notifyListeners();
+      }
+    } else {
+      if (setIsFabVisible) {
+        setIsFabVisible = false;
+        notifyListeners();
+      }
+    }
+
     if (setScrollController.position.pixels ==
-        setScrollController.position.maxScrollExtent) {
+            setScrollController.position.maxScrollExtent &&
+        getHasMore) {
       fetchIndexKindergartenProvider();
-      // if (setIsSearching && setHasMore) {
-      //   // fetchSearchKindergartens();
-      // } else if (!setIsSearching && setHasMore) {
-      //   fetchIndexKindergartenProvider();
-      // }
     }
+  }
+
+  void cleanUpListProvider() {
+    setFilteredKindergartenList = [];
+    setCurrentPage = 1;
+    setHasMore = true;
+    notifyListeners();
+  }
+
+  void setErrorMessage(String message) {
+    _setErrorMessage = message;
+    notifyListeners();
   }
 
   @override
   void dispose() {
-    setScrollController.removeListener(listenScrollController);
+    setScrollController.removeListener(listenScrollControllerProvider);
     setScrollController.dispose();
-    setSearchcontroller.dispose();
+    setSearchController.dispose();
     super.dispose();
   }
 

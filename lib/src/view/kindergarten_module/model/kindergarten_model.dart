@@ -57,9 +57,10 @@ class KindergartenDataModel {
   final String? description;
   final String? imageUrl;
   final String? city;
-  final String? state;
+  String? state;
   final String? contactPerson;
   final String? contactNo;
+  bool? value;
 
   KindergartenDataModel({
     this.id,
@@ -70,6 +71,7 @@ class KindergartenDataModel {
     this.state,
     this.contactPerson,
     this.contactNo,
+    this.value,
   });
 
   factory KindergartenDataModel.fromRawJson(String str) =>
@@ -79,15 +81,15 @@ class KindergartenDataModel {
 
   factory KindergartenDataModel.fromJson(Map<String, dynamic> json) =>
       KindergartenDataModel(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        imageUrl: json["imageUrl"],
-        city: json["city"],
-        state: json["state"],
-        contactPerson: json["contact_person"],
-        contactNo: json["contact_no"],
-      );
+          id: json["id"],
+          name: json["name"],
+          description: json["description"],
+          imageUrl: json["imageUrl"],
+          city: json["city"],
+          state: json["state"],
+          contactPerson: json["contact_person"],
+          contactNo: json["contact_no"],
+          value: json['value']);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -98,5 +100,6 @@ class KindergartenDataModel {
         "state": state,
         "contact_person": contactPerson,
         "contact_no": contactNo,
+        "value": value
       };
 }
