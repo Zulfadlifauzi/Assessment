@@ -7,6 +7,7 @@ import '../../../widget/container_widget.dart';
 import '../../../widget/empty_state_widget.dart';
 import '../../../widget/no_more_data_widget.dart';
 import '../presentation/kindergarten_show_screen.dart';
+import 'kindergarten_index_loading_component.dart';
 
 class KindergartenIndexListDataComponent extends StatelessWidget {
   final KindergartenProvider kindergartenProvider;
@@ -106,9 +107,7 @@ class KindergartenIndexListDataComponent extends StatelessWidget {
                 ),
               );
             } else if (kindergartenProvider.getHasMore) {
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.black),
-              );
+              return const KindergartenIndexLoadingComponent();
             } else if (kindergartenProvider.getErrorMessage != '') {
               return Column(
                 children: [
