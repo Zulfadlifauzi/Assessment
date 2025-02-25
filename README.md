@@ -3,6 +3,7 @@
 A new Flutter project.
 
 1. Listing screen
+
 a. Fetch data from the API endpoint:
 https://flutter-test.kiddocare.my/kindergartens
 
@@ -18,17 +19,20 @@ i. _page: Page number (e.g: _page=5 for page 5)
 ii. _per_page: Number of data per page. (e.g.: _per_page=100 for 100 data
 per page)
 
-3. Detail screen
+2. Detail screen
+
 a. Fetch data from API endpoint:
 https://flutter-test.kiddocare.my/kindergartens/{kindergarten_id}
 
 b. Display detailed information (e.g., image, name, location, contact details,
 description).
 
-
 # App example showcase
 
-https://github.com/user-attachments/assets/bf8c92b1-eb72-4a63-9ab6-5890dc9ab317
+https://github.com/user-attachments/assets/f0b82694-54aa-4b06-b6cf-90e1cec8aefb
+
+
+
 
 
 
