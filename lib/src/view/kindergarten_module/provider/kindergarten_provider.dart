@@ -3,15 +3,6 @@ import 'package:kiddocareassessment/src/view/kindergarten_module/model/kindergar
 import 'package:kiddocareassessment/src/view/kindergarten_module/repository/kindergarten_repository.dart';
 
 class KindergartenProvider extends KindergartenRepository {
-  KindergartenProvider() {
-    fetchIndexKindergartenProvider();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setScrollController.addListener(() {
-        listenScrollControllerProvider();
-      });
-    });
-  }
-
   int setCurrentPage = 1;
   int setPerPage = 10;
   KindergartenDataModel setSelectedState = KindergartenDataModel();
@@ -204,6 +195,14 @@ class KindergartenProvider extends KindergartenRepository {
       setSelectedState.state = '';
     }
     notifyListeners();
+  }
+
+  void listenScrolling() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setScrollController.addListener(() {
+        listenScrollControllerProvider();
+      });
+    });
   }
 
   void toggleStateSelectionsProvider(int index) async {

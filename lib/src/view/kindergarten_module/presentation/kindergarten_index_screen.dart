@@ -12,7 +12,9 @@ class KindergartenIndexScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => KindergartenProvider(),
+      create: (_) => KindergartenProvider()
+        ..fetchIndexKindergartenProvider()
+        ..listenScrolling(),
       child: Scaffold(
         floatingActionButton: Consumer<KindergartenProvider>(
           builder: (context, value, child) {
